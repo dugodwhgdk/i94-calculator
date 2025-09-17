@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>I-94 누적 체류일 자동 계산기</title>
+  <style>
+    body {font-family: Arial, sans-serif; margin: 20px;}
+    h1 {color: #2c3e50;}
+    .row {margin-bottom: 10px;}
+    label {margin-right: 5px;}
+    input {margin-right: 10px;}
+    button {margin: 10px 0; padding: 5px 10px;}
+    #result {margin-top: 20px; font-weight: bold;}
+  </style>
+</head>
+<body>
+  <h1>I-94 누적 체류일 계산기</h1>
+  <p>입국일과 출국일을 입력하면 누적 체류일을 계산합니다.</p>
+
+  <div id="rows">
+    <div class="row">
+      <label>입국일:</label>
+      <input type="date" class="entry">
+      <label>출국일:</label>
+      <input type="date" class="exit">
+    </div>
+  </div>
+
+  <button onclick="addRow()">+ 구간 추가</button><br>
+  <button onclick="calculate()">누적 체류일 계산</button>
+
+  <div id="result"></div>
+
+  <script>
+    function addRow(){
+      const div = document.createElement('div');
+      div.className = 'row';
+      div.innerHTML = '<label>입국일:</label><input type="date" class="entry"> <label>출국일:</label><input type="date" class="exit">';
+      document.getElementById('rows').appendChild(div);
+    }
+
+    function calculate(){
+      const entries = document.querySelectorAll('.entry');
+      const exits = document.querySelectorAll('.exit');
+      let totalDays = 0;
+      for(let i=0;i<entries.length;i++){
+        const start = new Date(entries[i].value);
+        const end = new Date(exits[i].value);
+        if(start && end && end>=start){
+          const diff = (end - start)/(1000*60*60*24) + 1;
+          totalDays += diff;
+        }
+      }
+      document.getElementById('result').innerText = '총 누적 체류일: ' + totalDays + '일';
+    }
+  </script>
+</body>
+</html>
